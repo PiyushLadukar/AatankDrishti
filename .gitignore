@@ -1,0 +1,72 @@
+# =========================
+# 🐍 Python
+# =========================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+*.log
+
+# Virtual environment
+venv/
+.env/
+.env.*
+
+# =========================
+# 📊 Jupyter Notebook
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# 📦 Data files (IMPORTANT)
+# =========================
+data/raw/*.csv
+data/processed/*.csv
+data/*.csv
+*.xlsx
+*.json
+*.csv
+
+# Images (optional - remove if needed)
+data/processed/*.png
+
+# =========================
+# 🤖 ML Models
+# =========================
+*.pkl
+*.joblib
+*.h5
+*.pt
+
+# =========================
+# 🌐 Node / React
+# =========================
+node_modules/
+dist/
+build/
+
+# =========================
+# 🛠️ VS Code / IDE
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# 🔐 Secrets
+# =========================
+.env
+.env.local
+
+# =========================
+# 🖥️ OS files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# 📁 Misc
+# =========================
+*.zip
+*.tar.gz
+*.bak

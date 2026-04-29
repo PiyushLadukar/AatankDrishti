@@ -232,7 +232,7 @@ function Homepage({ onEnter }: { onEnter: () => void }) {
             display: "flex", alignItems: "center", gap: 10,
             transition: "border-color 0.2s",
           }}>
-            <Database size={18} /> View Data Sources
+            <Database size={18} /><a href="https://www.start.umd.edu/data-tools/GTD"> View Data Source </a>
           </button>
         </div>
 
@@ -339,6 +339,153 @@ function Homepage({ onEnter }: { onEnter: () => void }) {
           </button>
         </div>
       </div>
+       
+
+<div style={{
+  marginTop: 100,
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  gap: 22
+}}>
+  {/* Title */}
+  <div style={{
+    fontSize: 12,
+    letterSpacing: "3px",
+    color: "#94a3b8",
+    fontWeight: 600
+  }}>
+    DESIGNED & BUILT BY
+  </div>
+
+  {/* Card */}
+  <a 
+    href="https://github.com/PiyushLadukar" 
+    target="_blank"
+    style={{ textDecoration: "none" }}
+  >
+    <div style={{
+      display: "flex",
+      alignItems: "center",
+      gap: 16,
+      padding: "18px 24px",
+      borderRadius: 60,
+      background: "linear-gradient(135deg, rgba(30,41,59,0.7), rgba(15,23,42,0.9))",
+      border: "1px solid rgba(148,163,184,0.2)",
+      backdropFilter: "blur(14px)",
+      boxShadow: "0 10px 40px rgba(0,0,0,0.3)",
+      transition: "all 0.35s cubic-bezier(0.16,1,0.3,1)",
+      cursor: "pointer",
+      position: "relative",
+      overflow: "hidden"
+    }}
+    onMouseEnter={(e) => {
+      e.currentTarget.style.transform = "translateY(-4px) scale(1.03)";
+      e.currentTarget.style.boxShadow = "0 15px 60px rgba(99,102,241,0.35)";
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.transform = "none";
+      e.currentTarget.style.boxShadow = "0 10px 40px rgba(0,0,0,0.3)";
+    }}
+    >
+
+      {/* Glow effect */}
+      <div style={{
+        position: "absolute",
+        inset: 0,
+        background: "linear-gradient(120deg, transparent, rgba(99,102,241,0.2), transparent)",
+        opacity: 0,
+        transition: "opacity 0.4s"
+      }} className="hover-glow" />
+
+      {/* Profile Image */}
+      <img
+        src="https://github.com/PiyushLadukar.png"
+        alt="Piyush Ladukar"
+        style={{
+          width: 52,
+          height: 52,
+          borderRadius: "50%",
+          border: "2px solid #334155"
+        }}
+      />
+
+      {/* Text */}
+      <div style={{ textAlign: "left" }}>
+        <div style={{
+          color: "white",
+          fontWeight: 700,
+          fontSize: 16,
+          letterSpacing: "0.3px"
+        }}>
+          Piyush Ladukar
+        </div>
+
+        <div style={{
+          color: "#94a3b8",
+          fontSize: 12
+        }}>
+          github.com/PiyushLadukar
+        </div>
+      </div>
+
+      {/* Arrow */}
+      <div style={{
+        marginLeft: 10,
+        color: "#64748b",
+        fontSize: 18,
+        transition: "transform 0.3s"
+      }}
+      className="arrow"
+      >
+        →
+      </div>
+    </div>
+  </a>
+
+  {/* LinkedIn Button */}
+  <a
+    href="https://www.linkedin.com/in/piyush-ladukar/"
+    target="_blank"
+    style={{
+      padding: "8px 18px",
+      borderRadius: 20,
+      fontSize: 12,
+      fontWeight: 600,
+      color: "#0ea5e9",
+      border: "1px solid rgba(14,165,233,0.3)",
+      textDecoration: "none",
+      transition: "all 0.3s"
+    }}
+    onMouseEnter={(e) => {
+      e.currentTarget.style.background = "rgba(14,165,233,0.1)";
+      e.currentTarget.style.transform = "scale(1.05)";
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.background = "transparent";
+      e.currentTarget.style.transform = "none";
+    }}
+  >
+    View LinkedIn Profile
+  </a>
+
+  {/* Footer Text */}
+  <div style={{
+    fontSize: 12,
+    color: "#64748b",
+    letterSpacing: "1px"
+  }}>
+   Understanding Terrorism Through Data, Not Assumptions· {new Date().getFullYear()}
+
+
+  </div>
+</div>
+
+<style>{`
+  a:hover .arrow {
+    transform: translateX(6px);
+  }
+`}</style>
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap');
@@ -880,6 +1027,8 @@ function Dashboard({ onBack }: { onBack: () => void }) {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap');
       `}</style>
+
+      
     </div>
   );
 }
@@ -901,3 +1050,4 @@ export default function App() {
     ? <Homepage onEnter={() => setPage("dashboard")} />
     : <Dashboard onBack={() => setPage("home")} />;
 }
+

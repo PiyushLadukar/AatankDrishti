@@ -25,7 +25,7 @@ data/raw/*.csv
 data/processed/*.csv
 data/*.csv
 *.xlsx
-*.json
+
 *.csv
 
 # Images (optional - remove if needed)

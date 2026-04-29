@@ -35,3 +35,6 @@ tqdm==4.67.1
 
 # --- Optional: OpenAI ---
 openai==1.51.0
+
+
+gunicorn

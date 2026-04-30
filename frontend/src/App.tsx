@@ -27,7 +27,14 @@ interface GroupData { group_name: string; ideology: string; incidents: number; k
 interface ReligionData { religion_subtype: string; incidents: number; }
 
 // ─── Config ─────────────────────────────────────────────────────────────────
-const API = "https://aatankdrishti.onrender.com/api";
+const API = "https://aatankdrishti.onrender.com/api/";
+fetch(`${API}/summary`)
+fetch(`${API}/ideology`)
+fetch(`${API}/timeline`)
+fetch(`${API}/region`)
+fetch(`${API}/top-groups`)
+fetch(`${API}/religion-subtype`)
+fetch(`${API}/attack-types`)
 
 const IDEOLOGY_COLORS: Record<string, string> = {
   "Religious Extremist": "#dc2626",

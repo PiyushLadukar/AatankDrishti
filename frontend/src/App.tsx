@@ -27,7 +27,7 @@ interface GroupData { group_name: string; ideology: string; incidents: number; k
 interface ReligionData { religion_subtype: string; incidents: number; }
 
 // ─── Config ─────────────────────────────────────────────────────────────────
-const API = "https://aatankdrishti.onrender.com/";
+const API = "https://aatankdrishti.onrender.com/api";
 
 const IDEOLOGY_COLORS: Record<string, string> = {
   "Religious Extremist": "#dc2626",

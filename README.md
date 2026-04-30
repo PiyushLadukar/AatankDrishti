@@ -1,2 +1,0 @@
-# AatankDrishti
-Global Terrorism Analysis 

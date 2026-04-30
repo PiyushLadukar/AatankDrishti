@@ -27,7 +27,7 @@ interface GroupData { group_name: string; ideology: string; incidents: number; k
 interface ReligionData { religion_subtype: string; incidents: number; }
 
 // ─── Config ─────────────────────────────────────────────────────────────────
-const API = "https://aatankdrishti.onrender.com/";
+const API = "https://aatankdrishti.onrender.com/api/health/";
 
 const IDEOLOGY_COLORS: Record<string, string> = {
   "Religious Extremist": "#dc2626",
@@ -787,7 +787,7 @@ function Dashboard({ onBack }: { onBack: () => void }) {
 
               <div style={{ background: "white", borderRadius: 16, padding: "28px", border: "1px solid #e2e8f0", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}>
                 <div style={{ fontSize: 17, fontWeight: 700, color: "#0f172a", marginBottom: 4 }}>Religious Extremism Breakdown</div>
-                <div style={{ fontSize: 13, color: "#64748b", marginBottom: 20 }}>Spans multiple faiths — not one religion</div>
+                <div style={{ fontSize: 13, color: "#64748b", marginBottom: 20 }}>Terrorism belongs to perticular religion</div>
                 {religion.loading ? <Loader /> :
                   <ResponsiveContainer width="100%" height={280}>
                     <PieChart>

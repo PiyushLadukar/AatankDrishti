@@ -89,6 +89,12 @@ DF = load_data()
 # ============================================================
 # API Routes
 # ============================================================
+@app.route("/")
+def home():
+    return {
+        "message": "AatankDrishti API is running....",
+        "status": "ok"
+    }
 
 @app.route('/api/health')
 def health():

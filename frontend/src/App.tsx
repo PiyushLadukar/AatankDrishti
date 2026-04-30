@@ -21,7 +21,7 @@ interface GroupData { group_name:string; ideology:string; incidents:number; kill
 interface ReligionData { religion_subtype:string; incidents:number }
 
 // ─── Constants ────────────────────────────────────────────────────────────────
-const API = "https://aatankdrishti.onrender.com";
+const API = "https://aatankdrishti.onrender.com/api";
 const IC: Record<string,string> = {
   "Religious Extremist":"#dc2626","Ethno-Nationalist":"#2563eb",
   "Left-Wing":"#d97706","Right-Wing":"#7c3aed","Unknown":"#64748b","Single Issue":"#059669",

@@ -27,7 +27,7 @@ data/*.csv
 *.xlsx
 
 *.csv
-
+!gtd_processed.csv
 # Images (optional - remove if needed)
 data/processed/*.png
 

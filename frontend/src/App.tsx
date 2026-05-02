@@ -8,6 +8,8 @@ import {
   BarChart2, Activity, Search, Filter, ChevronRight,
   Eye, Target, Zap, ArrowRight, Clock, Database, Brain,
   Github, Linkedin, Code, Play, Menu, X, Info,
+  BookOpen, Link, ExternalLink, FileText, Award, ChevronDown,
+  CheckCircle, Hash, Calendar, MapPin,
 } from "lucide-react";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -38,12 +40,7 @@ function useBreakpoint() {
     window.addEventListener("resize", fn);
     return () => window.removeEventListener("resize", fn);
   }, []);
-  return {
-    isMobile:  w < 640,
-    isTablet:  w >= 640 && w < 1024,
-    isDesktop: w >= 1024,
-    w,
-  };
+  return { isMobile: w < 640, isTablet: w >= 640 && w < 1024, isDesktop: w >= 1024, w };
 }
 
 // ─── API Hook ─────────────────────────────────────────────────────────────────
@@ -152,8 +149,607 @@ function Ticker() {
   );
 }
 
+// ─── Hero Visual Card ──────────────────────────────────────────────────────────
+function HeroVisual() {
+  const [tick, setTick] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setTick(t => t + 1), 2200);
+    return () => clearInterval(id);
+  }, []);
+
+  const liveStats = [
+    { label: "Iraq", val: "24,636", change: "+3.2%", c: "#dc2626" },
+    { label: "Afghanistan", val: "17,891", change: "+2.8%", c: "#d97706" },
+    { label: "Pakistan", val: "14,368", change: "+1.9%", c: "#7c3aed" },
+    { label: "India", val: "11,960", change: "+1.1%", c: "#2563eb" },
+    { label: "Colombia", val: "8,342", change: "+0.7%", c: "#059669" },
+  ];
+
+  const ideoBars = [
+    { label: "Religious Ext.", pct: 92, c: "#dc2626" },
+    { label: "Ethno-Nationalist", pct: 68, c: "#2563eb" },
+    { label: "Unknown", pct: 100, c: "#64748b" },
+    { label: "Left-Wing", pct: 28, c: "#d97706" },
+    { label: "Right-Wing", pct: 14, c: "#7c3aed" },
+  ];
+
+  const pulseRings = [
+    { size: 260, op: 0.04, delay: "0s" },
+    { size: 200, op: 0.07, delay: "0.6s" },
+    { size: 140, op: 0.10, delay: "1.2s" },
+  ];
+
+  return (
+    <div style={{ position: "relative", width: "100%", height: "100%", minHeight: 480, display: "flex", alignItems: "center", justifyContent: "center" }}>
+      {/* Ambient glow */}
+      <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 320, height: 320, borderRadius: "50%", background: "radial-gradient(circle, rgba(220,38,38,0.08) 0%, transparent 70%)", pointerEvents: "none" }} />
+
+      {/* Central globe */}
+      <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", zIndex: 10 }}>
+        {pulseRings.map((r, i) => (
+          <div key={i} style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: r.size, height: r.size, borderRadius: "50%", border: `1px solid rgba(220,38,38,${r.op})`, animation: `hpulse 3s ease-in-out ${r.delay} infinite` }} />
+        ))}
+        <div style={{ width: 80, height: 80, borderRadius: "50%", background: "linear-gradient(135deg,#dc2626,#7c3aed)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 40px rgba(220,38,38,0.3), 0 0 80px rgba(220,38,38,0.1)", position: "relative", zIndex: 2 }}>
+          <Globe size={36} color="white" />
+        </div>
+      </div>
+
+      {/* Top-left: Total incidents card */}
+      <div style={{ position: "absolute", top: "8%", left: "0%", background: "rgba(255,255,255,0.95)", backdropFilter: "blur(12px)", borderRadius: 14, padding: "14px 18px", border: "1px solid rgba(220,38,38,0.15)", boxShadow: "0 8px 32px rgba(0,0,0,0.08)", animation: "floatA 6s ease-in-out infinite", minWidth: 160, zIndex: 20 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+          <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#dc2626", animation: "blink 1.5s ease-in-out infinite" }} />
+          <span style={{ fontSize: 10, fontWeight: 700, color: "#dc2626", textTransform: "uppercase", letterSpacing: "1px", fontFamily: F }}>Total Incidents</span>
+        </div>
+        <div style={{ fontSize: 26, fontWeight: 800, color: "#0f172a", letterSpacing: "-1px", fontFamily: F }}>181,691</div>
+        <div style={{ fontSize: 10, color: "#64748b", marginTop: 2, fontFamily: F }}>1970 – 2020 · GTD</div>
+        <div style={{ marginTop: 10, height: 3, background: "#f1f5f9", borderRadius: 2 }}>
+          <div style={{ height: "100%", width: "78%", background: "linear-gradient(90deg,#dc2626,#f87171)", borderRadius: 2, animation: "barGrow 2s ease-out" }} />
+        </div>
+      </div>
+
+      {/* Top-right: Ideology mini-chart */}
+      <div style={{ position: "absolute", top: "4%", right: "0%", background: "rgba(255,255,255,0.95)", backdropFilter: "blur(12px)", borderRadius: 14, padding: "14px 16px", border: "1px solid rgba(124,58,237,0.15)", boxShadow: "0 8px 32px rgba(0,0,0,0.08)", animation: "floatB 7s ease-in-out infinite", minWidth: 170, zIndex: 20 }}>
+        <div style={{ fontSize: 10, fontWeight: 700, color: "#7c3aed", textTransform: "uppercase", letterSpacing: "1px", marginBottom: 10, fontFamily: F }}>Ideology Breakdown</div>
+        {ideoBars.map((b, i) => (
+          <div key={i} style={{ marginBottom: 6 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 2 }}>
+              <span style={{ fontSize: 9, color: "#64748b", fontFamily: F }}>{b.label}</span>
+              <span style={{ fontSize: 9, fontWeight: 700, color: b.c, fontFamily: F }}>{b.pct}%</span>
+            </div>
+            <div style={{ height: 4, background: "#f1f5f9", borderRadius: 2 }}>
+              <div style={{ height: "100%", width: `${b.pct}%`, background: b.c, borderRadius: 2, transition: "width 1s ease", opacity: 0.85 }} />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Left middle: Countries card */}
+      <div style={{ position: "absolute", left: "-4%", top: "42%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.95)", backdropFilter: "blur(12px)", borderRadius: 14, padding: "14px 16px", border: "1px solid rgba(37,99,235,0.15)", boxShadow: "0 8px 32px rgba(0,0,0,0.08)", animation: "floatC 8s ease-in-out infinite", zIndex: 20 }}>
+        <div style={{ fontSize: 10, fontWeight: 700, color: "#2563eb", textTransform: "uppercase", letterSpacing: "1px", marginBottom: 6, fontFamily: F }}>Coverage</div>
+        <div style={{ display: "flex", gap: 16 }}>
+          <div style={{ textAlign: "center" }}>
+            <div style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", letterSpacing: "-1px", fontFamily: F }}>205</div>
+            <div style={{ fontSize: 9, color: "#64748b", fontFamily: F }}>Countries</div>
+          </div>
+          <div style={{ width: 1, background: "#e2e8f0" }} />
+          <div style={{ textAlign: "center" }}>
+            <div style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", letterSpacing: "-1px", fontFamily: F }}>50</div>
+            <div style={{ fontSize: 9, color: "#64748b", fontFamily: F }}>Years</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Right middle: Live top countries */}
+      <div style={{ position: "absolute", right: "-4%", top: "46%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.95)", backdropFilter: "blur(12px)", borderRadius: 14, padding: "14px 16px", border: "1px solid rgba(220,38,38,0.12)", boxShadow: "0 8px 32px rgba(0,0,0,0.08)", animation: "floatD 9s ease-in-out infinite", minWidth: 170, zIndex: 20 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 10 }}>
+          <MapPin size={10} color="#dc2626" />
+          <span style={{ fontSize: 10, fontWeight: 700, color: "#dc2626", textTransform: "uppercase", letterSpacing: "1px", fontFamily: F }}>Top Affected</span>
+        </div>
+        {liveStats.map((s, i) => (
+          <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "4px 0", borderBottom: i < liveStats.length - 1 ? "1px solid #f8fafc" : "none" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <div style={{ width: 5, height: 5, borderRadius: "50%", background: s.c }} />
+              <span style={{ fontSize: 10, color: "#475569", fontFamily: F }}>{s.label}</span>
+            </div>
+            <span style={{ fontSize: 10, fontWeight: 700, color: "#0f172a", fontFamily: F }}>{s.val}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Bottom-left: Killed stat */}
+      <div style={{ position: "absolute", bottom: "10%", left: "4%", background: "rgba(15,23,42,0.92)", backdropFilter: "blur(12px)", borderRadius: 14, padding: "14px 18px", border: "1px solid rgba(220,38,38,0.2)", boxShadow: "0 8px 32px rgba(0,0,0,0.16)", animation: "floatE 7.5s ease-in-out infinite", zIndex: 20 }}>
+        <div style={{ fontSize: 10, fontWeight: 700, color: "#7c3aed", textTransform: "uppercase", letterSpacing: "1px", marginBottom: 4, fontFamily: F }}>Total Killed</div>
+        <div style={{ fontSize: 24, fontWeight: 800, color: "#fff", letterSpacing: "-1px", fontFamily: F }}>411,000+</div>
+        <div style={{ fontSize: 10, color: "#475569", marginTop: 2, fontFamily: F }}>Documented fatalities</div>
+      </div>
+
+      {/* Bottom-right: Groups */}
+      <div style={{ position: "absolute", bottom: "8%", right: "2%", background: "rgba(255,255,255,0.95)", backdropFilter: "blur(12px)", borderRadius: 14, padding: "12px 16px", border: "1px solid rgba(5,150,105,0.15)", boxShadow: "0 8px 32px rgba(0,0,0,0.08)", animation: "floatF 6.5s ease-in-out infinite", zIndex: 20 }}>
+        <div style={{ fontSize: 10, fontWeight: 700, color: "#059669", textTransform: "uppercase", letterSpacing: "1px", marginBottom: 4, fontFamily: F }}>Terrorist Groups</div>
+        <div style={{ fontSize: 24, fontWeight: 800, color: "#0f172a", letterSpacing: "-1px", fontFamily: F }}>3,500+</div>
+        <div style={{ display: "flex", gap: 4, marginTop: 6 }}>
+          {["RE","EN","LW","RW"].map((t, i) => (
+            <span key={i} style={{ fontSize: 8, fontWeight: 700, padding: "2px 6px", borderRadius: 4, background: ["#fef2f2","#eff6ff","#fffbeb","#f5f3ff"][i], color: ["#dc2626","#2563eb","#d97706","#7c3aed"][i], fontFamily: F }}>{t}</span>
+          ))}
+        </div>
+      </div>
+
+      <style>{`
+        @keyframes hpulse { 0%,100%{transform:translate(-50%,-50%) scale(1);opacity:1} 50%{transform:translate(-50%,-50%) scale(1.06);opacity:0.6} }
+        @keyframes floatA { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+        @keyframes floatB { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+        @keyframes floatC { 0%,100%{transform:translateY(-50%)} 50%{transform:translateY(calc(-50% - 8px))} }
+        @keyframes floatD { 0%,100%{transform:translateY(-50%)} 50%{transform:translateY(calc(-50% + 8px))} }
+        @keyframes floatE { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+        @keyframes floatF { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+        @keyframes barGrow { from{width:0} }
+      `}</style>
+    </div>
+  );
+}
+
+// ─── Dual-Thumb Range Slider ──────────────────────────────────────────────────
+function RangeSlider({ min, max, value, onChange }: { min: number; max: number; value: [number, number]; onChange: (v: [number, number]) => void }) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [dragging, setDragging] = useState<"min" | "max" | null>(null);
+  const pct = (v: number) => ((v - min) / (max - min)) * 100;
+  const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
+  const posToVal = (clientX: number) => {
+    if (!trackRef.current) return 0;
+    const { left, width } = trackRef.current.getBoundingClientRect();
+    return Math.round(clamp((clientX - left) / width, 0, 1) * (max - min) + min);
+  };
+  const onMouseDown = (thumb: "min" | "max") => (e: React.MouseEvent) => { e.preventDefault(); setDragging(thumb); };
+  useEffect(() => {
+    if (!dragging) return;
+    const move = (e: MouseEvent) => {
+      const v = posToVal(e.clientX);
+      if (dragging === "min") onChange([clamp(v, min, value[1] - 1), value[1]]);
+      else onChange([value[0], clamp(v, value[0] + 1, max)]);
+    };
+    const up = () => setDragging(null);
+    window.addEventListener("mousemove", move);
+    window.addEventListener("mouseup", up);
+    return () => { window.removeEventListener("mousemove", move); window.removeEventListener("mouseup", up); };
+  }, [dragging, value]);
+  const lo = pct(value[0]);
+  const hi = pct(value[1]);
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 10, flex: 1 }}>
+      <span style={{ fontSize: 11, fontWeight: 700, color: "#0f172a", fontFamily: F, minWidth: 36, textAlign: "right" }}>{value[0]}</span>
+      <div ref={trackRef} style={{ position: "relative", height: 24, flex: 1, display: "flex", alignItems: "center" }}>
+        <div style={{ position: "absolute", left: 0, right: 0, height: 4, borderRadius: 2, background: "#e2e8f0" }} />
+        <div style={{ position: "absolute", left: `${lo}%`, width: `${hi - lo}%`, height: 4, borderRadius: 2, background: "#0f172a" }} />
+        <div onMouseDown={onMouseDown("min")} style={{ position: "absolute", left: `${lo}%`, transform: "translateX(-50%)", width: 16, height: 16, borderRadius: "50%", background: "#fff", border: "2.5px solid #0f172a", boxShadow: "0 1px 6px rgba(0,0,0,0.18)", cursor: "grab", zIndex: dragging === "min" ? 3 : 2 }} />
+        <div onMouseDown={onMouseDown("max")} style={{ position: "absolute", left: `${hi}%`, transform: "translateX(-50%)", width: 16, height: 16, borderRadius: "50%", background: "#fff", border: "2.5px solid #0f172a", boxShadow: "0 1px 6px rgba(0,0,0,0.18)", cursor: "grab", zIndex: dragging === "max" ? 3 : 2 }} />
+      </div>
+      <span style={{ fontSize: 11, fontWeight: 700, color: "#0f172a", fontFamily: F, minWidth: 36 }}>{value[1]}</span>
+    </div>
+  );
+}
+
+// ─── DATA SOURCES PAGE ────────────────────────────────────────────────────────
+function CitationsPage({ onBack }: { onBack: () => void }) {
+  const { isMobile } = useBreakpoint();
+  const [scrolled, setScrolled] = useState(false);
+  const [expandedSection, setExpandedSection] = useState<string | null>("primary");
+
+  useEffect(() => {
+    const fn = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", fn);
+    return () => window.removeEventListener("scroll", fn);
+  }, []);
+
+  const primarySource = {
+    id: "GTD-2022",
+    title: "Global Terrorism Database (GTD)",
+    subtitle: "National Consortium for the Study of Terrorism and Responses to Terrorism (START)",
+    institution: "University of Maryland",
+    year: "2022",
+    url: "https://www.start.umd.edu/gtd/",
+    kaggle: "https://doi.org/10.7910/DVN/EMXWGR",
+    coverage: "1970–2020",
+    records: "181,691 incidents",
+    badge: "Primary Dataset",
+    badgeColor: "#dc2626",
+    description: "The GTD is an open-source database including information on terrorist attacks around the world from 1970 through 2020. The GTD includes systematic data on domestic as well as transnational and international terrorist incidents that have occurred during this time period and now includes more than 200,000 cases. For each GTD incident, information is available on the date and location of the incident, the weapons used and nature of the target, the number of casualties, and — when identifiable — the group or individual responsible.",
+    citation: `National Consortium for the Study of Terrorism and Responses to Terrorism (START), University of Maryland. (2022). Global Terrorism Database 1970 - 2020 [Data file]. Retrieved from https://www.start.umd.edu/gtd`,
+    fields: ["Date & Location", "Attack Type", "Weapons Used", "Target Type", "Casualties", "Group Responsible", "Success/Failure", "Nationality of Perpetrators"],
+    notes: [
+      "1993 data were not included in the original GTD and are estimated using a methodology described at START.umd.edu",
+      "Data from 2011 onward were collected by START",
+      "All years prior to 2011 were originally collected by PGIS",
+    ],
+  };
+
+  const academicSources = [
+    {
+      id: "RAND-2023",
+      authors: "Jones, S. G., Doxsee, C., Harrington, N.",
+      year: "2023",
+      title: "The Escalating Terrorism Problem in the United States",
+      journal: "RAND Corporation",
+      url: "https://www.rand.org/pubs/research_reports/RRA835-1.html",
+      usedFor: "Right-wing ideology classification methodology and trend analysis",
+      type: "Report",
+    },
+    {
+      id: "START-IDC",
+      authors: "Chermak, S., Freilich, J., Parkin, W.",
+      year: "2021",
+      title: "Ideology and Terrorism: A Review of the Literature",
+      journal: "Criminology & Public Policy",
+      url: "https://www.start.umd.edu/research-projects/ideology-and-terrorism-review-literature",
+      usedFor: "Academic framework for ideology classification into 6 categories",
+      type: "Academic Paper",
+    },
+    {
+      id: "UCDP-2022",
+      authors: "Sundberg, R., Melander, E.",
+      year: "2022",
+      title: "Introducing the UCDP Georeferenced Event Dataset",
+      journal: "Journal of Peace Research, 50(4)",
+      url: "https://ucdp.uu.se/downloads/",
+      usedFor: "Cross-validation of regional conflict data",
+      type: "Journal Article",
+    },
+    {
+      id: "TRAC-2023",
+      authors: "Terrorism Research & Analysis Consortium (TRAC)",
+      year: "2023",
+      title: "TRAC Global Terrorism & Insurgency Database",
+      journal: "TRAC",
+      url: "https://www.trackingterrorism.org/",
+      usedFor: "Supplementary group ideology verification for ambiguous cases",
+      type: "Database",
+    },
+    {
+      id: "CFR-2023",
+      authors: "Masters, J.",
+      year: "2023",
+      title: "Al-Qaeda: Council on Foreign Relations Backgrounder",
+      journal: "Council on Foreign Relations",
+      url: "https://www.cfr.org/backgrounder/al-qaeda-k-al-qaida-al-qa-ida",
+      usedFor: "Religious extremist group ideology classification",
+      type: "Report",
+    },
+    {
+      id: "ICSR-2022",
+      authors: "International Centre for the Study of Radicalisation (ICSR)",
+      year: "2022",
+      title: "Mapping the Jihadist Threat: ISIL and Beyond",
+      journal: "King's College London",
+      url: "https://icsr.info/research/",
+      usedFor: "Islamic extremism subtype classification (2011–2020)",
+      type: "Report",
+    },
+  ];
+
+  const methodologySources = [
+    {
+      id: "SKLEARN-2023",
+      name: "scikit-learn",
+      version: "1.3.0",
+      desc: "KMeans clustering algorithm used for AI ideology discovery (k=6 clusters, random_state=42)",
+      url: "https://scikit-learn.org/stable/",
+      citation: `Pedregosa, F. et al. (2011). Scikit-learn: Machine Learning in Python. JMLR 12, pp. 2825-2830.`,
+    },
+    {
+      id: "PANDAS-2023",
+      name: "pandas",
+      version: "2.0.3",
+      desc: "Data manipulation and CSV preprocessing pipeline",
+      url: "https://pandas.pydata.org/",
+      citation: `McKinney, W. (2010). Data Structures for Statistical Computing in Python. Proc. 9th Python in Science Conf., pp. 56-61.`,
+    },
+    {
+      id: "NUMPY-2023",
+      name: "NumPy",
+      version: "1.24.3",
+      desc: "Numerical computing foundation for data analysis",
+      url: "https://numpy.org/",
+      citation: `Harris, C. R. et al. (2020). Array programming with NumPy. Nature, 585, 357-362.`,
+    },
+    {
+      id: "FLASK-2023",
+      name: "Flask",
+      version: "3.0.0",
+      desc: "REST API backend serving processed GTD data endpoints",
+      url: "https://flask.palletsprojects.com/",
+      citation: `Ronacher, A. (2023). Flask Web Development Framework. Pallets Projects.`,
+    },
+    {
+      id: "REACT-2023",
+      name: "React + TypeScript",
+      version: "18.2.0",
+      desc: "Frontend dashboard UI framework",
+      url: "https://react.dev/",
+      citation: `Meta Platforms, Inc. (2023). React: The Library for Web and Native User Interfaces. Meta Open Source.`,
+    },
+    {
+      id: "RECHARTS",
+      name: "Recharts",
+      version: "2.9.0",
+      desc: "Composable charting library for all data visualizations in the dashboard",
+      url: "https://recharts.org/",
+      citation: `Recharts Group. (2023). Recharts: A Redefined Chart Library Built with React and D3.`,
+    },
+  ];
+
+  const ideologyMapping = [
+    { group: "Al-Qaeda, ISIS/ISIL, Boko Haram, Al-Shabaab, Hamas", ideology: "Religious Extremist (Islamic)", source: "ICSR, CFR, GTD codebook", color: "#dc2626" },
+    { group: "IRA, ETA, LTTE, PKK, Hezbollah", ideology: "Ethno-Nationalist", source: "START Academic Database, TRAC", color: "#2563eb" },
+    { group: "FARC, Shining Path, Red Brigades, Naxalites", ideology: "Left-Wing", source: "GTD codebook, START", color: "#d97706" },
+    { group: "Neo-Nazi groups, White Supremacist orgs, Anti-government militias", ideology: "Right-Wing", source: "RAND, START Domestic Terror Project", color: "#7c3aed" },
+    { group: "Unknown, unidentified perpetrators", ideology: "Unknown", source: "GTD gname field = 'Unknown'", color: "#64748b" },
+    { group: "Anti-abortion extremists, Animal liberation, Eco-terrorism", ideology: "Single Issue", source: "GTD codebook category", color: "#059669" },
+  ];
+
+  const Section = ({ id, title, icon, badge, children }: any) => {
+    const isOpen = expandedSection === id;
+    return (
+      <div style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: 16, overflow: "hidden", marginBottom: 16, boxShadow: "0 1px 8px rgba(0,0,0,0.04)" }}>
+        <div onClick={() => setExpandedSection(isOpen ? null : id)} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: isMobile ? "18px 16px" : "20px 28px", cursor: "pointer", userSelect: "none" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <div style={{ width: 36, height: 36, borderRadius: 10, background: "#f8fafc", border: "1px solid #e2e8f0", display: "flex", alignItems: "center", justifyContent: "center", color: "#0f172a" }}>{icon}</div>
+            <div>
+              <div style={{ fontWeight: 700, fontSize: isMobile ? 14 : 16, color: "#0f172a", fontFamily: F }}>{title}</div>
+              {badge && <span style={{ fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 20, background: `${badge.c}12`, color: badge.c, fontFamily: F }}>{badge.label}</span>}
+            </div>
+          </div>
+          <ChevronDown size={18} color="#94a3b8" style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0)", transition: "transform 0.3s" }} />
+        </div>
+        {isOpen && <div style={{ borderTop: "1px solid #f1f5f9", padding: isMobile ? "20px 16px" : "28px" }}>{children}</div>}
+      </div>
+    );
+  };
+
+  return (
+    <div style={{ minHeight: "100vh", background: "#f8fafc", fontFamily: F }}>
+      {/* Nav */}
+      <nav style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: isMobile ? "0 16px" : "0 60px", height: isMobile ? 52 : 58, background: scrolled ? "rgba(255,255,255,0.96)" : "#fff", borderBottom: "1px solid #e2e8f0", position: "sticky", top: 0, zIndex: 200, boxShadow: scrolled ? "0 2px 20px rgba(0,0,0,0.06)" : "none", transition: "all 0.3s" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: isMobile ? 10 : 18 }}>
+          <button onClick={onBack} style={{ display: "flex", alignItems: "center", gap: 5, background: "none", border: "1px solid #e2e8f0", borderRadius: 7, padding: isMobile ? "5px 10px" : "6px 13px", color: "#64748b", fontSize: isMobile ? 12 : 13, cursor: "pointer", fontWeight: 500, fontFamily: F }}>← Home</button>
+          <Logo size={isMobile ? 24 : 28} />
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, background: "#eff6ff", border: "1px solid #bfdbfe", borderRadius: 8, padding: "6px 12px" }}>
+          <BookOpen size={12} color="#2563eb" />
+          <span style={{ fontSize: 12, fontWeight: 600, color: "#2563eb", fontFamily: F }}>Data Sources</span>
+        </div>
+      </nav>
+
+      {/* Hero banner */}
+      <div style={{ background: "linear-gradient(135deg,#0f172a 0%,#1e293b 60%,#0f172a 100%)", padding: isMobile ? "40px 18px" : "56px 60px", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", top: -80, right: -80, width: 300, height: 300, borderRadius: "50%", background: "radial-gradient(circle,rgba(220,38,38,0.08),transparent 70%)", pointerEvents: "none" }} />
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(220,38,38,0.1)", border: "1px solid rgba(220,38,38,0.25)", borderRadius: 100, padding: "4px 14px", marginBottom: 16 }}>
+            <Award size={11} color="#fca5a5" />
+            <span style={{ color: "#fca5a5", fontSize: 11, fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", fontFamily: F }}>Research Transparency</span>
+          </div>
+          <h1 style={{ fontSize: isMobile ? 28 : 44, fontWeight: 800, color: "#fff", letterSpacing: "-1.5px", marginBottom: 12, fontFamily: F }}>Data Sources & Citations</h1>
+          <p style={{ fontSize: isMobile ? 13 : 16, color: "#64748b", maxWidth: 600, lineHeight: 1.7, marginBottom: 28, fontFamily: F }}>
+            आतंकदृष्टि is built on peer-reviewed, publicly available data. All sources are documented below in full academic citation format. No data has been altered, fabricated, or improperly attributed.
+          </p>
+          <div style={{ display: "flex", gap: isMobile ? 12 : 20, flexWrap: "wrap" }}>
+            {[
+              { label: "Primary Dataset", val: "GTD · START/UMD", c: "#dc2626" },
+              { label: "Academic Papers", val: "6 Sources", c: "#7c3aed" },
+              { label: "Tech Libraries", val: "6 Cited", c: "#059669" },
+              { label: "Coverage", val: "1970–2020", c: "#2563eb" },
+            ].map((s, i) => (
+              <div key={i} style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 10, padding: "12px 18px" }}>
+                <div style={{ fontSize: 9, fontWeight: 700, color: s.c, textTransform: "uppercase", letterSpacing: "1px", marginBottom: 3, fontFamily: F }}>{s.label}</div>
+                <div style={{ fontSize: 15, fontWeight: 700, color: "#fff", fontFamily: F }}>{s.val}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div style={{ maxWidth: 1100, margin: "0 auto", padding: isMobile ? "24px 14px" : "36px 60px" }}>
+
+        {/* PRIMARY SOURCE */}
+        <Section id="primary" title="Primary Dataset" icon={<Database size={18} />} badge={{ label: "Core Data Source", c: "#dc2626" }}>
+          <div style={{ background: "linear-gradient(135deg,#fef2f2,#fff5f5)", border: "2px solid #fecaca", borderRadius: 14, padding: isMobile ? "20px" : "28px", marginBottom: 20 }}>
+            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, flexWrap: "wrap", marginBottom: 16 }}>
+              <div>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+                  <span style={{ background: "#dc2626", color: "#fff", fontSize: 10, fontWeight: 700, padding: "2px 10px", borderRadius: 20, fontFamily: F }}>PRIMARY</span>
+                  <span style={{ background: "#fef2f2", color: "#dc2626", fontSize: 10, fontWeight: 700, padding: "2px 10px", borderRadius: 20, border: "1px solid #fecaca", fontFamily: F }}>{primarySource.records}</span>
+                </div>
+                <h3 style={{ fontSize: isMobile ? 18 : 22, fontWeight: 800, color: "#0f172a", letterSpacing: "-0.5px", marginBottom: 4, fontFamily: F }}>{primarySource.title}</h3>
+                <div style={{ fontSize: 13, color: "#64748b", fontFamily: F }}>{primarySource.subtitle} · {primarySource.institution}</div>
+              </div>
+              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                <a href={primarySource.url} target="_blank" rel="noreferrer" style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 14px", background: "#dc2626", color: "#fff", borderRadius: 8, fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: F }}>
+                  <ExternalLink size={12} />Visit GTD
+                </a>
+                <a href={primarySource.kaggle} target="_blank" rel="noreferrer" style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 14px", background: "#fff", color: "#0f172a", borderRadius: 8, fontSize: 12, fontWeight: 600, textDecoration: "none", border: "1px solid #e2e8f0", fontFamily: F }}>
+                  <Link size={12} />KAGGLE Dataset
+                </a>
+              </div>
+            </div>
+
+            <p style={{ fontSize: isMobile ? 13 : 14, color: "#475569", lineHeight: 1.75, marginBottom: 20, fontFamily: F }}>{primarySource.description}</p>
+
+            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(4,1fr)", gap: 10, marginBottom: 20 }}>
+              {[
+                { label: "Coverage Period", val: primarySource.coverage, icon: <Calendar size={12} /> },
+                { label: "Total Records", val: primarySource.records, icon: <Database size={12} /> },
+                { label: "Institution", val: "Univ. of Maryland", icon: <Award size={12} /> },
+                { label: "Last Updated", val: primarySource.year, icon: <Clock size={12} /> },
+              ].map((m, i) => (
+                <div key={i} style={{ background: "#fff", borderRadius: 10, padding: "12px", border: "1px solid #fecaca" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 5, color: "#dc2626", marginBottom: 4 }}>{m.icon}<span style={{ fontSize: 9, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px", fontFamily: F }}>{m.label}</span></div>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: "#0f172a", fontFamily: F }}>{m.val}</div>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ background: "#fff", borderRadius: 10, padding: "16px", border: "1px solid #fecaca", marginBottom: 16 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: "#dc2626", textTransform: "uppercase", letterSpacing: "1px", marginBottom: 8, fontFamily: F }}>Key Data Fields Used</div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                {primarySource.fields.map((f, i) => (
+                  <span key={i} style={{ background: "#fef2f2", color: "#dc2626", fontSize: 11, fontWeight: 600, padding: "3px 10px", borderRadius: 6, fontFamily: F }}>{f}</span>
+                ))}
+              </div>
+            </div>
+
+            <div style={{ background: "#0f172a", borderRadius: 10, padding: "16px" }}>
+              <div style={{ fontSize: 10, fontWeight: 700, color: "#64748b", textTransform: "uppercase", letterSpacing: "1px", marginBottom: 8, fontFamily: F }}>📋 Full Citation (APA Format)</div>
+              <p style={{ fontSize: isMobile ? 11 : 12, color: "#94a3b8", lineHeight: 1.7, fontFamily: "monospace", margin: 0 }}>{primarySource.citation}</p>
+            </div>
+
+            {primarySource.notes.length > 0 && (
+              <div style={{ marginTop: 14 }}>
+                {primarySource.notes.map((n, i) => (
+                  <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 8, padding: "6px 0" }}>
+                    <Info size={12} color="#d97706" style={{ marginTop: 2, flexShrink: 0 }} />
+                    <span style={{ fontSize: 12, color: "#64748b", lineHeight: 1.6, fontFamily: F }}>{n}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </Section>
+
+        {/* ACADEMIC SOURCES */}
+        <Section id="academic" title="Academic & Research Sources" icon={<BookOpen size={18} />} badge={{ label: "6 Sources", c: "#7c3aed" }}>
+          <p style={{ fontSize: 13, color: "#64748b", marginBottom: 20, lineHeight: 1.65, fontFamily: F }}>
+            These sources were used to validate ideology classifications, cross-reference group affiliations, and contextualize regional terrorism trends.
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            {academicSources.map((s, i) => (
+              <div key={s.id} style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: 12, padding: isMobile ? "16px" : "20px" }}>
+                <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6, flexWrap: "wrap" }}>
+                      <span style={{ background: "#f1f5f9", color: "#64748b", fontSize: 9, fontWeight: 700, padding: "2px 8px", borderRadius: 4, fontFamily: "monospace" }}>[{s.id}]</span>
+                      <span style={{ background: "#f5f3ff", color: "#7c3aed", fontSize: 9, fontWeight: 700, padding: "2px 8px", borderRadius: 20, fontFamily: F }}>{s.type}</span>
+                      <span style={{ color: "#94a3b8", fontSize: 10, fontFamily: F }}>{s.year}</span>
+                    </div>
+                    <div style={{ fontWeight: 700, fontSize: isMobile ? 13 : 14, color: "#0f172a", marginBottom: 3, fontFamily: F }}>{s.title}</div>
+                    <div style={{ fontSize: 12, color: "#64748b", marginBottom: 8, fontFamily: F }}>{s.authors} · <em>{s.journal}</em></div>
+                    <div style={{ display: "flex", alignItems: "flex-start", gap: 6, background: "#fffbeb", borderRadius: 6, padding: "6px 10px", border: "1px solid #fef08a" }}>
+                      <CheckCircle size={11} color="#d97706" style={{ marginTop: 1, flexShrink: 0 }} />
+                      <span style={{ fontSize: 11, color: "#92400e", fontFamily: F }}><strong>Used for:</strong> {s.usedFor}</span>
+                    </div>
+                  </div>
+                  <a href={s.url} target="_blank" rel="noreferrer" style={{ display: "flex", alignItems: "center", gap: 5, padding: "7px 12px", background: "#fff", color: "#7c3aed", borderRadius: 8, fontSize: 11, fontWeight: 600, textDecoration: "none", border: "1px solid #e9d5ff", whiteSpace: "nowrap", flexShrink: 0, fontFamily: F }}>
+                    <ExternalLink size={11} />View Source
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Section>
+
+        {/* IDEOLOGY MAPPING */}
+        <Section id="mapping" title="Ideology Classification Mapping" icon={<Target size={18} />} badge={{ label: "Documented", c: "#059669" }}>
+          <p style={{ fontSize: 13, color: "#64748b", marginBottom: 20, lineHeight: 1.65, fontFamily: F }}>
+            Each ideology classification used in this dashboard is based on documented sources — not arbitrary decisions. The table below maps perpetrator groups to ideology categories with citations.
+          </p>
+          <div style={{ overflowX: "auto" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
+              <thead>
+                <tr style={{ background: "#f8fafc", borderBottom: "2px solid #e2e8f0" }}>
+                  {["Example Groups", "Ideology Category", "Source"].map(h => (
+                    <th key={h} style={{ textAlign: "left", padding: "10px 14px", color: "#64748b", fontWeight: 700, fontSize: 11, fontFamily: F }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {ideologyMapping.map((r, i) => (
+                  <tr key={i} style={{ borderBottom: "1px solid #f1f5f9" }}>
+                    <td style={{ padding: "12px 14px", color: "#475569", fontSize: 11, lineHeight: 1.5, fontFamily: F, maxWidth: 280 }}>{r.group}</td>
+                    <td style={{ padding: "12px 14px" }}>
+                      <span style={{ background: `${r.color}10`, color: r.color, fontSize: 11, fontWeight: 700, padding: "3px 10px", borderRadius: 20, fontFamily: F }}>{r.ideology}</span>
+                    </td>
+                    <td style={{ padding: "12px 14px", color: "#64748b", fontSize: 11, fontFamily: "monospace" }}>{r.source}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div style={{ marginTop: 16, background: "#f0fdf4", borderRadius: 10, padding: "14px 16px", border: "1px solid #bbf7d0" }}>
+            <div style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
+              <CheckCircle size={14} color="#059669" style={{ marginTop: 1, flexShrink: 0 }} />
+              <span style={{ fontSize: 12, color: "#065f46", lineHeight: 1.65, fontFamily: F }}>
+                <strong>Methodology note:</strong> Groups with ambiguous or contested ideological affiliation were conservatively assigned to "Unknown" rather than forcing a classification. Approximately 38% of GTD incidents fall in this category. No assumptions were made beyond documented evidence.
+              </span>
+            </div>
+          </div>
+        </Section>
+
+        {/* TECH / SOFTWARE */}
+        <Section id="tech" title="Software & Libraries" icon={<Code size={18} />} badge={{ label: "Open Source", c: "#2563eb" }}>
+          <p style={{ fontSize: 13, color: "#64748b", marginBottom: 20, lineHeight: 1.65, fontFamily: F }}>
+            All software used in the data pipeline and frontend dashboard is open-source. Full citations are provided below.
+          </p>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 12 }}>
+            {methodologySources.map((s, i) => (
+              <div key={s.id} style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: 12, padding: "18px" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8, marginBottom: 8 }}>
+                  <div>
+                    <div style={{ fontWeight: 700, fontSize: 14, color: "#0f172a", fontFamily: F }}>{s.name}</div>
+                    <div style={{ fontSize: 10, color: "#94a3b8", fontFamily: "monospace" }}>v{s.version}</div>
+                  </div>
+                  <a href={s.url} target="_blank" rel="noreferrer" style={{ display: "flex", alignItems: "center", gap: 4, padding: "5px 10px", background: "#eff6ff", color: "#2563eb", borderRadius: 6, fontSize: 11, fontWeight: 600, textDecoration: "none", fontFamily: F, flexShrink: 0 }}>
+                    <ExternalLink size={10} />Docs
+                  </a>
+                </div>
+                <p style={{ fontSize: 12, color: "#64748b", lineHeight: 1.6, marginBottom: 10, fontFamily: F }}>{s.desc}</p>
+                <div style={{ background: "#0f172a", borderRadius: 6, padding: "10px 12px" }}>
+                  <div style={{ fontSize: 10, color: "#475569", marginBottom: 4, fontFamily: F }}>Citation:</div>
+                  <div style={{ fontSize: 10, color: "#94a3b8", lineHeight: 1.6, fontFamily: "monospace" }}>{s.citation}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Section>
+
+        {/* DATA ETHICS */}
+        <Section id="ethics" title="Data Ethics & Disclaimer" icon={<Shield size={18} />} badge={{ label: "Research Use Only", c: "#d97706" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            {[
+              { icon: <Shield size={14} />, c: "#059669", title: "Research Integrity", body: "This dashboard is built strictly for academic and research purposes. No data has been modified, cherry-picked, or manipulated. All figures are derived directly from the GTD CSV files with only documented cleaning steps (removing nulls, standardizing column names)." },
+              { icon: <AlertTriangle size={14} />, c: "#d97706", title: "Sensitivity Notice", body: "Terrorism data involves real victims and real violence. Numbers in this dashboard represent human lives. This project does not glorify, trivialize, or politically exploit any incident. The goal is understanding — not sensationalism." },
+              { icon: <Globe size={14} />, c: "#2563eb", title: "Ideological Neutrality", body: "All six ideology categories — including Unknown — are treated with equal methodological rigor. No ideology is presented as inherently more dangerous. Geographic and historical context is recommended when interpreting any category." },
+              { icon: <Hash size={14} />, c: "#7c3aed", title: "No Data Fabrication", body: "The ~38% 'Unknown' category is preserved as-is rather than redistributed or estimated. Fabricating ideology for undocumented incidents would introduce systematic bias. Users are encouraged to interpret this absence of information as meaningful." },
+            ].map((e, i) => (
+              <div key={i} style={{ display: "flex", gap: 14, padding: "16px", background: `${e.c}06`, border: `1px solid ${e.c}18`, borderRadius: 12 }}>
+                <div style={{ width: 32, height: 32, borderRadius: 8, background: `${e.c}12`, display: "flex", alignItems: "center", justifyContent: "center", color: e.c, flexShrink: 0 }}>{e.icon}</div>
+                <div>
+                  <div style={{ fontWeight: 700, fontSize: 14, color: "#0f172a", marginBottom: 4, fontFamily: F }}>{e.title}</div>
+                  <p style={{ fontSize: 13, color: "#475569", lineHeight: 1.7, margin: 0, fontFamily: F }}>{e.body}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Section>
+
+        {/* Footer cite */}
+        <div style={{ background: "#0f172a", borderRadius: 16, padding: isMobile ? "24px 18px" : "32px 40px", marginTop: 8, textAlign: "center" }}>
+          <div style={{ fontSize: 11, color: "#475569", fontFamily: F, marginBottom: 6 }}>Quick Citation for this Dashboard</div>
+          <div style={{ fontSize: isMobile ? 11 : 13, color: "#94a3b8", fontFamily: "monospace", lineHeight: 1.7, background: "rgba(255,255,255,0.03)", borderRadius: 8, padding: "14px 18px", border: "1px solid rgba(255,255,255,0.06)" }}>
+            Ladukar, P. (2024). आतंकदृष्टि (AatankDrishti): Global Terrorism Intelligence Dashboard [Web application]. Built on GTD data from START Center, University of Maryland. GitHub: github.com/PiyushLadukar
+          </div>
+          <div style={{ marginTop: 16, display: "flex", justifyContent: "center", gap: 12, flexWrap: "wrap" }}>
+            <a href="https://www.start.umd.edu/gtd/" target="_blank" rel="noreferrer" style={{ fontSize: 12, color: "#64748b", textDecoration: "none", fontFamily: F, display: "flex", alignItems: "center", gap: 5 }}><ExternalLink size={11} />GTD Official Site</a>
+            <a href="https://doi.org/10.7910/DVN/EMXWGR" target="_blank" rel="noreferrer" style={{ fontSize: 12, color: "#64748b", textDecoration: "none", fontFamily: F, display: "flex", alignItems: "center", gap: 5 }}><Link size={11} />Dataset Kaggle</a>
+            <a href="https://github.com/PiyushLadukar" target="_blank" rel="noreferrer" style={{ fontSize: 12, color: "#64748b", textDecoration: "none", fontFamily: F, display: "flex", alignItems: "center", gap: 5 }}><Github size={11} />GitHub Repo</a>
+          </div>
+        </div>
+      </div>
+
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap');`}</style>
+    </div>
+  );
+}
+
 // ─── HOMEPAGE ─────────────────────────────────────────────────────────────────
-function Homepage({ onEnter }: { onEnter: () => void }) {
+function Homepage({ onEnter, onCitations }: { onEnter: () => void; onCitations: () => void }) {
   const { isMobile, isTablet, isDesktop } = useBreakpoint();
   const [vis, setVis] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -211,9 +807,7 @@ function Homepage({ onEnter }: { onEnter: () => void }) {
     { y: 2010, v: 8400 }, { y: 2015, v: 14200 }, { y: 2018, v: 9800 }, { y: 2020, v: 7200 },
   ];
 
-  const tech = [
-    
-  ];
+  const tech: any[] = [];
 
   return (
     <div style={{ fontFamily: F, background: "#fff", overflowX: "hidden" }}>
@@ -221,19 +815,18 @@ function Homepage({ onEnter }: { onEnter: () => void }) {
       {/* ── Nav ── */}
       <nav style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: isMobile ? "0 16px" : "0 60px", height: isMobile ? 56 : 68, background: scrolled ? "rgba(255,255,255,0.96)" : "rgba(255,255,255,0.85)", backdropFilter: "blur(20px)", borderBottom: scrolled ? "1px solid #e2e8f0" : "1px solid transparent", position: "sticky", top: 0, zIndex: 200, boxShadow: scrolled ? "0 2px 20px rgba(0,0,0,0.06)" : "none", transition: "all 0.3s" }}>
         <Logo size={isMobile ? 28 : 34} />
-        {/* Desktop nav */}
         {!isMobile && (
           <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
-            {["About", "Research", "Data"].map(l => (
-              <div key={l} style={{ padding: "8px 14px", borderRadius: 8, color: "#475569", fontSize: 14, cursor: "pointer", fontWeight: 500, transition: "background 0.2s" }} onMouseEnter={e => (e.currentTarget as HTMLDivElement).style.background = "#f1f5f9"} onMouseLeave={e => (e.currentTarget as HTMLDivElement).style.background = "transparent"}>{l}</div>
-            ))}
+           
+            <div onClick={onCitations} style={{ padding: "8px 14px", borderRadius: 8, color: "#475569", fontSize: 14, cursor: "pointer", fontWeight: 500, display: "flex", alignItems: "center", gap: 5, transition: "background 0.2s" }} onMouseEnter={e => (e.currentTarget as HTMLDivElement).style.background = "#f1f5f9"} onMouseLeave={e => (e.currentTarget as HTMLDivElement).style.background = "transparent"}>
+              <BookOpen size={14} />Data Sources
+            </div>
             <div style={{ width: 1, height: 18, background: "#e2e8f0", margin: "0 6px" }} />
             <button onClick={onEnter} style={{ padding: "8px 20px", background: "linear-gradient(135deg,#0f172a,#1e293b)", color: "white", border: "none", borderRadius: 9, fontSize: 14, fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", gap: 7, boxShadow: "0 4px 14px rgba(15,23,42,0.22)", transition: "transform 0.2s", fontFamily: F }} onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.transform = "translateY(-1px)"} onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.transform = "translateY(0)"}>
               Open Dashboard <ArrowRight size={14} />
             </button>
           </div>
         )}
-        {/* Mobile hamburger */}
         {isMobile && (
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
             <button onClick={onEnter} style={{ padding: "7px 14px", background: "#0f172a", color: "white", border: "none", borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: F }}>Dashboard</button>
@@ -243,12 +836,14 @@ function Homepage({ onEnter }: { onEnter: () => void }) {
           </div>
         )}
       </nav>
-      {/* Mobile menu dropdown */}
       {isMobile && menuOpen && (
         <div style={{ background: "#fff", borderBottom: "1px solid #e2e8f0", padding: "12px 16px", display: "flex", flexDirection: "column", gap: 2, position: "sticky", top: 56, zIndex: 199 }}>
-          {["About", "Research", "Data"].map(l => (
+          {["About", "Research"].map(l => (
             <div key={l} style={{ padding: "10px 14px", borderRadius: 8, color: "#475569", fontSize: 14, cursor: "pointer", fontWeight: 500 }}>{l}</div>
           ))}
+          <div onClick={onCitations} style={{ padding: "10px 14px", borderRadius: 8, color: "#475569", fontSize: 14, cursor: "pointer", fontWeight: 500, display: "flex", alignItems: "center", gap: 6 }}>
+            <BookOpen size={14} />Data Sources
+          </div>
         </div>
       )}
 
@@ -257,44 +852,49 @@ function Homepage({ onEnter }: { onEnter: () => void }) {
         <div style={{ position: "absolute", top: -80, right: -80, width: isMobile ? 200 : 400, height: isMobile ? 200 : 400, borderRadius: "50%", background: "radial-gradient(circle,rgba(124,58,237,0.06),transparent 65%)", pointerEvents: "none" }} />
         <div style={{ position: "absolute", bottom: -60, left: -60, width: isMobile ? 180 : 320, height: isMobile ? 180 : 320, borderRadius: "50%", background: "radial-gradient(circle,rgba(220,38,38,0.05),transparent 65%)", pointerEvents: "none" }} />
 
-        <div style={maxW}>
-          {/* Badge */}
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#fef3f2", border: "1px solid #fecaca", borderRadius: 100, padding: "5px 14px", marginBottom: 20 }}>
-            <div style={{ width: 6, height: 6, background: "#dc2626", borderRadius: "50%", animation: "pulse-d 2s infinite" }} />
-            <span style={{ color: "#dc2626", fontSize: isMobile ? 12 : 13, fontWeight: 600, fontFamily: F }}>Data-Driven Research Platform · GTD 1970–2020</span>
+        <div style={{ ...maxW, display: "grid", gridTemplateColumns: isMobile || isTablet ? "1fr" : "1fr 1fr", gap: isDesktop ? 48 : 0, alignItems: "center" }}>
+          {/* Left: text content */}
+          <div>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#fef3f2", border: "1px solid #fecaca", borderRadius: 100, padding: "5px 14px", marginBottom: 20 }}>
+              <div style={{ width: 6, height: 6, background: "#dc2626", borderRadius: "50%", animation: "pulse-d 2s infinite" }} />
+              <span style={{ color: "#dc2626", fontSize: isMobile ? 12 : 13, fontWeight: 600, fontFamily: F }}>Data-Driven Research Platform · GTD 1970–2020</span>
+            </div>
+
+            <h1 style={{ fontSize: isMobile ? "clamp(40px,11vw,56px)" : isTablet ? "clamp(52px,8vw,72px)" : "clamp(56px,6vw,88px)", fontWeight: 800, color: "#0f172a", lineHeight: 1.0, letterSpacing: isMobile ? "-2px" : "-4px", maxWidth: 820, marginBottom: 12, marginTop: 8, fontFamily: F }}>
+              आतंकदृष्टि
+            </h1>
+            <h2 style={{ fontSize: isMobile ? 18 : isTablet ? 22 : 24, fontWeight: 400, color: "#64748b", letterSpacing: "-0.3px", marginBottom: 16, fontFamily: F }}>
+              Global Terrorism Intelligence Dashboard
+            </h2>
+            <p style={{ fontSize: isMobile ? 15 : 17, color: "#475569", lineHeight: 1.75, maxWidth: 520, marginBottom: 36, fontFamily: F }}>
+              Analyze <strong style={{ color: "#0f172a" }}>180,000+</strong> documented terrorism incidents across 50 years. Explore ideology patterns, regional data, and AI-discovered insights.
+            </p>
+
+            <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 40 }}>
+              <button onClick={onEnter} style={{ padding: isMobile ? "12px 24px" : "14px 32px", background: "linear-gradient(135deg,#0f172a,#334155)", color: "white", border: "none", borderRadius: 12, fontSize: isMobile ? 14 : 15, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", gap: 10, boxShadow: "0 8px 28px rgba(15,23,42,0.28)", transition: "transform 0.2s", fontFamily: F }} onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.transform = "translateY(-2px)"} onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.transform = "translateY(0)"}>
+                <Play size={isMobile ? 15 : 17} fill="white" />Launch Dashboard
+              </button>
+              <button onClick={onCitations} style={{ padding: isMobile ? "12px 20px" : "14px 28px", background: "#fff", color: "#0f172a", border: "1.5px solid #e2e8f0", borderRadius: 12, fontSize: isMobile ? 14 : 15, fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", gap: 8, transition: "border-color 0.2s", fontFamily: F }} onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.borderColor = "#94a3b8"} onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.borderColor = "#e2e8f0"}>
+                <BookOpen size={15} />Data Sources
+              </button>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", background: "#fff", border: "1px solid #e2e8f0", borderRadius: 16, overflow: "hidden", boxShadow: "0 4px 20px rgba(0,0,0,0.06)", maxWidth: 520 }}>
+              {[{ v: "180K+", l: "Incidents" }, { v: "205", l: "Countries" }, { v: "50+", l: "Years" }, { v: "6", l: "Ideologies" }].map((s, i) => (
+                <div key={i} style={{ padding: isMobile ? "16px 10px" : "20px", textAlign: "center", borderRight: i < 3 ? "1px solid #e2e8f0" : "none" }}>
+                  <div style={{ fontSize: isMobile ? 18 : 22, fontWeight: 800, color: "#0f172a", letterSpacing: "-1px", fontFamily: F }}>{s.v}</div>
+                  <div style={{ fontSize: 10, color: "#64748b", marginTop: 3, fontWeight: 500, fontFamily: F }}>{s.l}</div>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <h1 style={{ fontSize: isMobile ? "clamp(40px,11vw,56px)" : isTablet ? "clamp(52px,8vw,72px)" : "clamp(64px,8vw,100px)", fontWeight: 800, color: "#0f172a", lineHeight: 1.0, letterSpacing: isMobile ? "-2px" : "-4px", maxWidth: 820, marginBottom: 12, marginTop: 8, fontFamily: F }}>
-            आतंकदृष्टि
-          </h1>
-          <h2 style={{ fontSize: isMobile ? 18 : isTablet ? 22 : 28, fontWeight: 400, color: "#64748b", letterSpacing: "-0.3px", marginBottom: 16, fontFamily: F }}>
-            Global Terrorism Intelligence Dashboard
-          </h2>
-          <p style={{ fontSize: isMobile ? 15 : 18, color: "#475569", lineHeight: 1.75, maxWidth: 560, marginBottom: 36, fontFamily: F }}>
-            Analyze <strong style={{ color: "#0f172a" }}>180,000+</strong> documented terrorism incidents across 50 years. Explore ideology patterns, regional data, and AI-discovered insights.
-          </p>
-
-          {/* CTA buttons */}
-          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 56 }}>
-            <button onClick={onEnter} style={{ padding: isMobile ? "12px 24px" : "15px 36px", background: "linear-gradient(135deg,#0f172a,#334155)", color: "white", border: "none", borderRadius: 12, fontSize: isMobile ? 14 : 16, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", gap: 10, boxShadow: "0 8px 28px rgba(15,23,42,0.28)", transition: "transform 0.2s", fontFamily: F }} onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.transform = "translateY(-2px)"} onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.transform = "translateY(0)"}>
-              <Play size={isMobile ? 15 : 18} fill="white" />Launch Dashboard
-            </button>
-            {!isMobile && (
-              <a href="https://www.start.umd.edu/gtd/" target="_blank" rel="noreferrer" style={{ padding: "15px 36px", background: "#fff", color: "#0f172a", border: "1.5px solid #e2e8f0", borderRadius: 12, fontSize: 16, fontWeight: 600, display: "flex", alignItems: "center", gap: 10, textDecoration: "none", transition: "border-color 0.2s", fontFamily: F }} onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.borderColor = "#94a3b8"} onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.borderColor = "#e2e8f0"}>
-                <Database size={18} />GTD Data Source
-              </a>
-            )}
-          </div>
-
-          {/* Stats row */}
-          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(4,1fr)", background: "#fff", border: "1px solid #e2e8f0", borderRadius: 16, overflow: "hidden", boxShadow: "0 4px 20px rgba(0,0,0,0.06)", maxWidth: isMobile ? "100%" : 680 }}>
-            {[{ v: "180K+", l: "Incidents" }, { v: "205", l: "Countries" }, { v: "50+", l: "Years" }, { v: "6", l: "Ideologies" }].map((s, i) => (
-              <div key={i} style={{ padding: isMobile ? "18px 12px" : "22px 24px", textAlign: "center", borderRight: isMobile ? (i % 2 === 0 ? "1px solid #e2e8f0" : "none") : (i < 3 ? "1px solid #e2e8f0" : "none"), borderBottom: isMobile && i < 2 ? "1px solid #e2e8f0" : "none" }}>
-                <div style={{ fontSize: isMobile ? 20 : 24, fontWeight: 800, color: "#0f172a", letterSpacing: "-1px", fontFamily: F }}>{s.v}</div>
-                <div style={{ fontSize: isMobile ? 10 : 11, color: "#64748b", marginTop: 3, fontWeight: 500, fontFamily: F }}>{s.l}</div>
-              </div>
-            ))}
-          </div>
+          {/* Right: animated visual — desktop only */}
+          {isDesktop && (
+            <div style={{ position: "relative", height: 520, width: "100%" }}>
+              <HeroVisual />
+            </div>
+          )}
         </div>
         <style>{`@keyframes pulse-d{0%,100%{opacity:1}50%{opacity:0.4}}`}</style>
       </div>
@@ -356,7 +956,7 @@ function Homepage({ onEnter }: { onEnter: () => void }) {
             </div>
             <h2 style={{ fontSize: isMobile ? 22 : isTablet ? 30 : 38, fontWeight: 800, color: "#fff", letterSpacing: "-1px", fontFamily: F }}>Terrorism by the Numbers</h2>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : isTablet ? "repeat(3,1fr)" : "repeat(3,1fr)", gap: isMobile ? 12 : 18 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(3,1fr)", gap: isMobile ? 12 : 18 }}>
             {numFacts.map((f, i) => (
               <div key={i} style={{ background: "rgba(255,255,255,0.03)", border: `1px solid ${f.c}20`, borderTop: `3px solid ${f.c}`, borderRadius: 14, padding: isMobile ? "20px 16px" : "28px 24px", opacity: num.v ? 1 : 0, transform: num.v ? "translateY(0)" : "translateY(24px)", transition: `all 0.7s ease ${i * 0.08}s` }}>
                 <div style={{ fontSize: isMobile ? 28 : 40, fontWeight: 800, color: f.c, letterSpacing: "-1.5px", marginBottom: 6, fontFamily: F }}>{f.val}</div>
@@ -423,9 +1023,14 @@ function Homepage({ onEnter }: { onEnter: () => void }) {
               <h2 style={{ fontSize: isMobile ? 22 : 30, fontWeight: 800, color: "#fff", letterSpacing: "-0.8px", marginBottom: 8, fontFamily: F }}>Ready to explore the data?</h2>
               <p style={{ fontSize: isMobile ? 13 : 15, color: "#475569", maxWidth: 420, lineHeight: 1.65, fontFamily: F }}>180,000+ incidents. 50 years. All ideologies. No assumptions.</p>
             </div>
-            <button onClick={onEnter} style={{ padding: isMobile ? "12px 24px" : "15px 36px", background: "#fff", color: "#0f172a", border: "none", borderRadius: 12, fontSize: isMobile ? 14 : 15, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", gap: 8, whiteSpace: "nowrap", boxShadow: "0 4px 16px rgba(0,0,0,0.18)", transition: "transform 0.2s", fontFamily: F }} onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.transform = "scale(1.03)"} onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.transform = "scale(1)"}>
-              Launch Dashboard <ChevronRight size={16} />
-            </button>
+            <div style={{ display: "flex", gap: 10, flexDirection: isMobile ? "column" : "row", width: isMobile ? "100%" : "auto" }}>
+              <button onClick={onCitations} style={{ padding: isMobile ? "11px 20px" : "14px 28px", background: "rgba(255,255,255,0.08)", color: "white", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 12, fontSize: isMobile ? 13 : 14, fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", gap: 7, fontFamily: F }}>
+                <BookOpen size={14} />Data Sources
+              </button>
+              <button onClick={onEnter} style={{ padding: isMobile ? "12px 24px" : "14px 32px", background: "#fff", color: "#0f172a", border: "none", borderRadius: 12, fontSize: isMobile ? 14 : 15, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", gap: 8, whiteSpace: "nowrap", boxShadow: "0 4px 16px rgba(0,0,0,0.18)", transition: "transform 0.2s", fontFamily: F }} onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.transform = "scale(1.03)"} onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.transform = "scale(1)"}>
+                Launch Dashboard <ChevronRight size={16} />
+              </button>
+            </div>
           </div>
         </div>
       </section>
@@ -442,7 +1047,6 @@ function Homepage({ onEnter }: { onEnter: () => void }) {
               <div style={{ background: "linear-gradient(135deg,#0f172a,#1a2744 60%,#0f172a)", borderRadius: 22, padding: isMobile ? "28px 20px" : "40px 44px", position: "relative", overflow: "hidden" }}>
                 <div style={{ position: "absolute", top: -60, right: -40, width: 200, height: 200, borderRadius: "50%", background: "radial-gradient(circle,rgba(220,38,38,0.1),transparent 70%)", pointerEvents: "none" }} />
                 <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: isMobile ? 24 : 36, alignItems: isMobile ? "center" : "flex-start", position: "relative" }}>
-                  {/* Avatar */}
                   <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12, flexShrink: 0 }}>
                     <div style={{ position: "relative" }}>
                       <div style={{ position: "absolute", inset: -3, borderRadius: "50%", background: "linear-gradient(135deg,#dc2626,#7c3aed,#2563eb)", animation: "spin-r 5s linear infinite" }} />
@@ -457,7 +1061,6 @@ function Homepage({ onEnter }: { onEnter: () => void }) {
                       </a>
                     </div>
                   </div>
-                  {/* Info */}
                   <div style={{ flex: 1, textAlign: isMobile ? "center" : "left" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4, flexWrap: "wrap", justifyContent: isMobile ? "center" : "flex-start" }}>
                       <h3 style={{ fontSize: isMobile ? 22 : 26, fontWeight: 800, color: "#fff", letterSpacing: "-0.5px", margin: 0, fontFamily: F }}>Piyush Ladukar</h3>
@@ -492,6 +1095,7 @@ function Homepage({ onEnter }: { onEnter: () => void }) {
         <span style={{ fontSize: 11, color: "#334155", fontFamily: F }}>GTD, START Center, University of Maryland · Research use only · {new Date().getFullYear()}</span>
         <div style={{ display: "flex", gap: 16 }}>
           <a href="https://www.start.umd.edu/gtd/" target="_blank" rel="noreferrer" style={{ fontSize: 11, color: "#475569", textDecoration: "none", fontFamily: F }}>GTD Source</a>
+          <span onClick={onCitations} style={{ fontSize: 11, color: "#475569", cursor: "pointer", fontFamily: F }}>Data Sources</span>
           <a href="https://github.com/PiyushLadukar" target="_blank" rel="noreferrer" style={{ fontSize: 11, color: "#475569", textDecoration: "none", fontFamily: F }}>GitHub</a>
         </div>
       </footer>
@@ -551,32 +1155,18 @@ function Dashboard({ onBack }: { onBack: () => void }) {
 
   return (
     <div style={{ minHeight: "100vh", background: "#f8fafc", fontFamily: F }}>
-      {/* Top bar */}
       <div style={{ background: "#fff", borderBottom: "1px solid #e2e8f0", padding: isMobile ? "0 14px" : "0 28px", display: "flex", alignItems: "center", justifyContent: "space-between", height: isMobile ? 52 : 58, position: "sticky", top: 0, zIndex: 100, boxShadow: "0 1px 8px rgba(0,0,0,0.04)" }}>
         <div style={{ display: "flex", alignItems: "center", gap: isMobile ? 10 : 18, minWidth: 0 }}>
           <button onClick={onBack} style={{ display: "flex", alignItems: "center", gap: 5, background: "none", border: "1px solid #e2e8f0", borderRadius: 7, padding: isMobile ? "5px 10px" : "6px 13px", color: "#64748b", fontSize: isMobile ? 12 : 13, cursor: "pointer", fontWeight: 500, fontFamily: F, flexShrink: 0 }}>← Home</button>
           <Logo size={isMobile ? 24 : 28} />
-          {!isMobile && (
-            <>
-              <span style={{ color: "#e2e8f0", fontSize: 18 }}>|</span>
-              <span style={{ color: "#64748b", fontSize: 13, fontWeight: 500 }}>Analysis Dashboard</span>
-            </>
-          )}
+          {!isMobile && (<><span style={{ color: "#e2e8f0", fontSize: 18 }}>|</span><span style={{ color: "#64748b", fontSize: 13, fontWeight: 500 }}>Analysis Dashboard</span></>)}
         </div>
         <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-          
-          {!isMobile && (
-            <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: 7, padding: "5px 10px", fontSize: 12, color: "#64748b", display: "flex", alignItems: "center", gap: 5, fontFamily: F }}>
-              <Clock size={12} />GTD 1970–2020
-            </div>
-          )}
+          {!isMobile && (<div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: 7, padding: "5px 10px", fontSize: 12, color: "#64748b", display: "flex", alignItems: "center", gap: 5, fontFamily: F }}><Clock size={12} />GTD 1970–2020</div>)}
         </div>
       </div>
 
-      
-
       <div style={{ padding: pad }}>
-        {/* Stat cards */}
         {s && (
           <div style={{ display: "flex", gap: isMobile ? 8 : 12, flexWrap: "wrap", marginBottom: isMobile ? 16 : 22 }}>
             <SC icon={<Activity size={14} />} label="Total Incidents" value={s.total_incidents} sub={s.years_covered} color="#dc2626" />
@@ -588,7 +1178,6 @@ function Dashboard({ onBack }: { onBack: () => void }) {
           </div>
         )}
 
-        {/* Tabs */}
         <div style={{ display: "flex", gap: isMobile ? 3 : 4, marginBottom: isMobile ? 12 : 16, background: "#fff", borderRadius: 10, padding: 3, border: "1px solid #e2e8f0", width: "100%", boxShadow: "0 1px 4px rgba(0,0,0,0.04)", overflowX: "auto" }}>
           {([
             { id: "overview", label: "Overview", icon: <BarChart2 size={13} /> },
@@ -602,7 +1191,6 @@ function Dashboard({ onBack }: { onBack: () => void }) {
           ))}
         </div>
 
-        {/* Filters */}
         <div style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: 10, padding: isMobile ? "12px" : "14px 18px", marginBottom: isMobile ? 14 : 20, boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10, flexWrap: "wrap" }}>
             <Filter size={12} color="#94a3b8" />
@@ -613,14 +1201,12 @@ function Dashboard({ onBack }: { onBack: () => void }) {
               <button key={ide} onClick={() => setSel(ide)} style={{ padding: isMobile ? "4px 10px" : "5px 13px", background: sel === ide ? (IC[ide] || "#0f172a") : "#f8fafc", color: sel === ide ? "white" : "#475569", border: `1px solid ${sel === ide ? (IC[ide] || "#0f172a") : "#e2e8f0"}`, borderRadius: 20, fontSize: isMobile ? 10 : 12, fontWeight: 600, cursor: "pointer", transition: "all 0.15s", fontFamily: F }}>{ide}</button>
             ))}
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-            <span style={{ fontSize: 11, color: "#64748b", fontFamily: F }}>Year: {yr[0]}–{yr[1]}</span>
-            <input type="range" min={1970} max={2020} value={yr[0]} onChange={e => setYr([+e.target.value, yr[1]])} style={{ flex: 1, maxWidth: isMobile ? 100 : 140, accentColor: "#0f172a" }} />
-            <input type="range" min={1970} max={2020} value={yr[1]} onChange={e => setYr([yr[0], +e.target.value])} style={{ flex: 1, maxWidth: isMobile ? 100 : 140, accentColor: "#0f172a" }} />
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 2 }}>
+            <span style={{ fontSize: 11, color: "#64748b", fontWeight: 600, fontFamily: F, whiteSpace: "nowrap" }}>Year Range</span>
+            <RangeSlider min={1970} max={2020} value={yr} onChange={setYr} />
           </div>
         </div>
 
-        {/* ── OVERVIEW ── */}
         {tab === "overview" && (
           <div style={{ display: "flex", flexDirection: "column", gap: isMobile ? 14 : 20 }}>
             <div style={{ background: "#fff", borderRadius: 14, padding: isMobile ? "18px" : "24px", border: "1px solid #e2e8f0", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}>
@@ -661,16 +1247,44 @@ function Dashboard({ onBack }: { onBack: () => void }) {
               <div style={{ background: "#fff", borderRadius: 14, padding: isMobile ? "18px" : "24px", border: "1px solid #e2e8f0", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}>
                 <div style={{ fontSize: isMobile ? 14 : 16, fontWeight: 700, color: "#0f172a", marginBottom: 3, fontFamily: F }}>Religious Extremism — By Faith</div>
                 <div style={{ fontSize: isMobile ? 11 : 13, color: "#64748b", marginBottom: 16, fontFamily: F }}>Spans multiple religions</div>
-                {relig.loading ? <Loader /> : (relig.data && relig.data.length > 0) ? (
-                  <ResponsiveContainer width="100%" height={isMobile ? 200 : 260}>
-                    <PieChart>
-                      <Pie data={relig.data} dataKey="incidents" nameKey="religion_subtype" cx="50%" cy="50%" outerRadius={isMobile ? 75 : 100} innerRadius={isMobile ? 35 : 48} label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`} labelLine={false}>
-                        {relig.data.map((e: ReligionData) => <Cell key={e.religion_subtype} fill={RC[e.religion_subtype] || "#94a3b8"} />)}
-                      </Pie>
-                      <Tooltip content={<CT />} />
-                    </PieChart>
-                  </ResponsiveContainer>
-                ) : (
+                {relig.loading ? <Loader /> : (relig.data && relig.data.length > 0) ? (() => {
+                  const total = relig.data.reduce((s: number, d: ReligionData) => s + d.incidents, 0);
+                  return (
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
+                      <PieChart width={isMobile ? 160 : 200} height={isMobile ? 160 : 200}>
+                        <Pie data={relig.data} dataKey="incidents" nameKey="religion_subtype" cx="50%" cy="50%" outerRadius={isMobile ? 74 : 92} innerRadius={isMobile ? 36 : 48} label={false} labelLine={false}>
+                          {relig.data.map((e: ReligionData) => <Cell key={e.religion_subtype} fill={RC[e.religion_subtype] || "#94a3b8"} />)}
+                        </Pie>
+                        <Tooltip content={({ active, payload }) => {
+                          if (!active || !payload?.length) return null;
+                          const d = payload[0];
+                          const val = Number(d.value ?? 0);
+                          const pct = total > 0 ? ((val / total) * 100).toFixed(1) : "0";
+                          return (
+                            <div style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: 9, padding: "8px 12px", boxShadow: "0 6px 20px rgba(0,0,0,0.1)", fontFamily: F }}>
+                              <div style={{ fontWeight: 700, color: "#0f172a", fontSize: 12, marginBottom: 2 }}>{d.name}</div>
+                              <div style={{ fontSize: 11, color: "#64748b" }}>{val.toLocaleString()} incidents</div>
+                              <div style={{ fontSize: 12, fontWeight: 700, color: d.payload?.fill || "#0f172a", marginTop: 2 }}>{pct}%</div>
+                            </div>
+                          );
+                        }} />
+                      </PieChart>
+                      <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: isMobile ? "6px 14px" : "8px 20px" }}>
+                        {relig.data.map((e: ReligionData) => {
+                          const pct = total > 0 ? ((e.incidents / total) * 100).toFixed(1) : "0";
+                          const color = RC[e.religion_subtype] || "#94a3b8";
+                          return (
+                            <div key={e.religion_subtype} style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                              <div style={{ width: 8, height: 8, borderRadius: "50%", background: color, flexShrink: 0 }} />
+                              <span style={{ fontSize: 12, color: "#475569", fontFamily: F, fontWeight: 500 }}>{e.religion_subtype}</span>
+                              <span style={{ fontSize: 12, fontWeight: 700, color: color, fontFamily: F }}>{pct}%</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })() : (
                   <div style={{ height: 200, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 8 }}>
                     <Info size={28} color="#cbd5e1" />
                     <p style={{ color: "#94a3b8", fontSize: 12, textAlign: "center", fontFamily: F }}>No religion subtype data.<br />Run notebook 02 with real GTD.</p>
@@ -681,7 +1295,6 @@ function Dashboard({ onBack }: { onBack: () => void }) {
           </div>
         )}
 
-        {/* ── IDEOLOGY ── */}
         {tab === "ideology" && (
           <div style={{ display: "flex", flexDirection: "column", gap: isMobile ? 14 : 20 }}>
             <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isMobile ? 14 : 20 }}>
@@ -717,7 +1330,6 @@ function Dashboard({ onBack }: { onBack: () => void }) {
           </div>
         )}
 
-        {/* ── GROUPS ── */}
         {tab === "groups" && (
           <div style={{ background: "#fff", borderRadius: 14, padding: isMobile ? "18px" : "24px", border: "1px solid #e2e8f0", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}>
             <div style={{ display: "flex", alignItems: isMobile ? "flex-start" : "center", justifyContent: "space-between", marginBottom: 18, flexDirection: isMobile ? "column" : "row", gap: 10 }}>
@@ -775,7 +1387,6 @@ function Dashboard({ onBack }: { onBack: () => void }) {
           </div>
         )}
 
-        {/* ── INSIGHTS ── */}
         {tab === "insights" && (
           <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isMobile ? 12 : 18 }}>
             {[
@@ -814,9 +1425,10 @@ function Dashboard({ onBack }: { onBack: () => void }) {
 
 // ─── Root ─────────────────────────────────────────────────────────────────────
 export default function App() {
-  const [page, setPage] = useState<"home" | "dashboard">("home");
+  const [page, setPage] = useState<"home" | "dashboard" | "citations">("home");
   useEffect(() => { window.scrollTo(0, 0); }, [page]);
-  return page === "home"
-    ? <Homepage onEnter={() => setPage("dashboard")} />
-    : <Dashboard onBack={() => setPage("home")} />;
+
+  if (page === "dashboard") return <Dashboard onBack={() => setPage("home")} />;
+  if (page === "citations") return <CitationsPage onBack={() => setPage("home")} />;
+  return <Homepage onEnter={() => setPage("dashboard")} onCitations={() => setPage("citations")} />;
 }

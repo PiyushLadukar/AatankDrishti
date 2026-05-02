@@ -1098,7 +1098,7 @@ function Homepage({ onEnter, onCitations }: { onEnter: () => void; onCitations: 
         <div style={{ display: "flex", gap: 16 }}>
           <a href="https://www.start.umd.edu/gtd/" target="_blank" rel="noreferrer" style={{ fontSize: 11, color: "#475569", textDecoration: "none", fontFamily: F }}>GTD Source</a>
           <span onClick={onCitations} style={{ fontSize: 11, color: "#475569", cursor: "pointer", fontFamily: F }}>Data Sources</span>
-          <a href="https://github.com/PiyushLadukar" target="_blank" rel="noreferrer" style={{ fontSize: 11, color: "#475569", textDecoration: "none", fontFamily: F }}>GitHub</a>
+          <a href="https://github.com/PiyushLadukar/AatankDrishti" target="_blank" rel="noreferrer" style={{ fontSize: 11, color: "#475569", textDecoration: "none", fontFamily: F }}>GitHub</a>
         </div>
       </footer>
 

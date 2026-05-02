@@ -858,8 +858,8 @@ function Homepage({ onEnter, onCitations }: { onEnter: () => void; onCitations: 
           {/* Left: text content */}
           <div>
             <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#fef3f2", border: "1px solid #fecaca", borderRadius: 100, padding: "5px 14px", marginBottom: 20 }}>
-              <div style={{ width: 6, height: 6, background: "#26dc3b", borderRadius: "50%", animation: "pulse-d 2s infinite" }} />
-              <span style={{ color: "#35dc26", fontSize: isMobile ? 12 : 13, fontWeight: 600, fontFamily: F }}>· GTD 1970–2020</span>
+              <div style={{ width: 6, height: 6, background: "#ec1e1e", borderRadius: "50%", animation: "pulse-d 2s infinite" }} />
+              <span style={{ color: "#e01a1a", fontSize: isMobile ? 12 : 13, fontWeight: 600, fontFamily: F }}> GTD 1970–2020</span>
             </div>
 
             <h1 style={{ fontSize: isMobile ? "clamp(40px,11vw,56px)" : isTablet ? "clamp(52px,8vw,72px)" : "clamp(56px,6vw,88px)", fontWeight: 800, color: "#0f172a", lineHeight: 1.0, letterSpacing: isMobile ? "-2px" : "-4px", maxWidth: 820, marginBottom: 12, marginTop: 8, fontFamily: F }}>

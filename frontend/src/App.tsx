@@ -348,7 +348,7 @@ function CitationsPage({ onBack }: { onBack: () => void }) {
     institution: "University of Maryland",
     year: "2022",
     url: "https://www.start.umd.edu/gtd/",
-    kaggle: "https://doi.org/10.7910/DVN/EMXWGR",
+    kaggle: "https://www.kaggle.com/datasets/START-UMD/gtd",
     coverage: "1970–2020",
     records: "181,691 incidents",
     badge: "Primary Dataset",
@@ -369,8 +369,8 @@ function CitationsPage({ onBack }: { onBack: () => void }) {
       authors: "Jones, S. G., Doxsee, C., Harrington, N.",
       year: "2023",
       title: "The Escalating Terrorism Problem in the United States",
-      journal: "RAND Corporation",
-      url: "https://www.rand.org/pubs/research_reports/RRA835-1.html",
+      journal: "CSISRAND Corporation",
+      url: "https://www.csis.org/analysis/escalating-terrorism-problem-united-states",
       usedFor: "Right-wing ideology classification methodology and trend analysis",
       type: "Report",
     },
@@ -380,9 +380,9 @@ function CitationsPage({ onBack }: { onBack: () => void }) {
       year: "2021",
       title: "Ideology and Terrorism: A Review of the Literature",
       journal: "Criminology & Public Policy",
-      url: "https://www.start.umd.edu/research-projects/ideology-and-terrorism-review-literature",
+      url: "https://www.annualreviews.org/content/journals/10.1146/annurev-criminol-022422-121713",
       usedFor: "Academic framework for ideology classification into 6 categories",
-      type: "Academic Paper",
+      type: "Journal Article ",
     },
     {
       id: "UCDP-2022",
@@ -410,7 +410,7 @@ function CitationsPage({ onBack }: { onBack: () => void }) {
       year: "2023",
       title: "Al-Qaeda: Council on Foreign Relations Backgrounder",
       journal: "Council on Foreign Relations",
-      url: "https://www.cfr.org/backgrounder/al-qaeda-k-al-qaida-al-qa-ida",
+      url: "https://www.cfr.org/backgrounders/al-qaeda-aka-al-qaida-al-qaida",
       usedFor: "Religious extremist group ideology classification",
       type: "Report",
     },
@@ -420,7 +420,7 @@ function CitationsPage({ onBack }: { onBack: () => void }) {
       year: "2022",
       title: "Mapping the Jihadist Threat: ISIL and Beyond",
       journal: "King's College London",
-      url: "https://icsr.info/research/",
+      url: "https://www.usip.org/sites/default/files/The-Jihadi-Threat-ISIS-Al-Qaeda-and-Beyond.pdf",
       usedFor: "Islamic extremism subtype classification (2011–2020)",
       type: "Report",
     },
@@ -737,7 +737,7 @@ function CitationsPage({ onBack }: { onBack: () => void }) {
           </div>
           <div style={{ marginTop: 16, display: "flex", justifyContent: "center", gap: 12, flexWrap: "wrap" }}>
             <a href="https://www.start.umd.edu/gtd/" target="_blank" rel="noreferrer" style={{ fontSize: 12, color: "#64748b", textDecoration: "none", fontFamily: F, display: "flex", alignItems: "center", gap: 5 }}><ExternalLink size={11} />GTD Official Site</a>
-            <a href="https://doi.org/10.7910/DVN/EMXWGR" target="_blank" rel="noreferrer" style={{ fontSize: 12, color: "#64748b", textDecoration: "none", fontFamily: F, display: "flex", alignItems: "center", gap: 5 }}><Link size={11} />Dataset Kaggle</a>
+            <a href="https://www.kaggle.com/datasets/START-UMD/gtd" target="_blank" rel="noreferrer" style={{ fontSize: 12, color: "#64748b", textDecoration: "none", fontFamily: F, display: "flex", alignItems: "center", gap: 5 }}><Link size={11} />Dataset Kaggle</a>
             <a href="https://github.com/PiyushLadukar" target="_blank" rel="noreferrer" style={{ fontSize: 12, color: "#64748b", textDecoration: "none", fontFamily: F, display: "flex", alignItems: "center", gap: 5 }}><Github size={11} />GitHub Repo</a>
           </div>
         </div>

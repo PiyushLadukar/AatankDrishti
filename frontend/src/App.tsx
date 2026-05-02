@@ -116,16 +116,20 @@ function Loader() {
 function Logo({ size = 34 }: { size?: number }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 9, flexShrink: 0 }}>
-      <div style={{ width: size, height: size, borderRadius: Math.round(size * 0.28), background: "linear-gradient(135deg,#dc2626,#7c3aed)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 12px rgba(220,38,38,0.3)", position: "relative", overflow: "hidden", flexShrink: 0 }}>
-        <div style={{ position: "absolute", width: "200%", height: "200%", borderRadius: "50%", border: "1px solid rgba(255,255,255,0.15)", top: "-50%", left: "-50%" }} />
-        <svg width={size * 0.48} height={size * 0.48} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round">
-          <circle cx="12" cy="12" r="3" />
-          <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" />
-        </svg>
-      </div>
+      <img
+        src="./logo.png"
+        alt="AatankDrishti Logo"
+        style={{
+          width: size,
+          height: size,
+          borderRadius: Math.round(size * 0.28),
+          objectFit: "contain",
+          flexShrink: 0,
+        }}
+      />
       <div>
-        <div style={{ fontWeight: 800, fontSize: Math.round(size * 0.42), color: "#0f172a", letterSpacing: "-0.3px", lineHeight: 1, fontFamily: F }}>आतंकदृष्टि</div>
-        <div style={{ fontSize: 8, color: "#94a3b8", letterSpacing: "1.5px", textTransform: "uppercase", fontWeight: 600, marginTop: 1, fontFamily: F }}>AatankDrishti</div>
+        <div style={{ fontWeight: 1200, fontSize: Math.round(size * 0.6), color: "#0f172a", letterSpacing: "-0.3px", lineHeight: 1, fontFamily: F }}>आतंकदृष्टि</div>
+        <div style={{ fontSize: 10, color: "#94a3b8", letterSpacing: "1.5px", textTransform: "uppercase", fontWeight: 600, marginTop: 1, fontFamily: F }}>AatankDrishti</div>
       </div>
     </div>
   );
@@ -732,13 +736,11 @@ function CitationsPage({ onBack }: { onBack: () => void }) {
         {/* Footer cite */}
         <div style={{ background: "#0f172a", borderRadius: 16, padding: isMobile ? "24px 18px" : "32px 40px", marginTop: 8, textAlign: "center" }}>
           <div style={{ fontSize: 11, color: "#475569", fontFamily: F, marginBottom: 6 }}>Quick Citation for this Dashboard</div>
-          <div style={{ fontSize: isMobile ? 11 : 13, color: "#94a3b8", fontFamily: "monospace", lineHeight: 1.7, background: "rgba(255,255,255,0.03)", borderRadius: 8, padding: "14px 18px", border: "1px solid rgba(255,255,255,0.06)" }}>
-            Ladukar, P. (2024). आतंकदृष्टि (AatankDrishti): Global Terrorism Intelligence Dashboard [Web application]. Built on GTD data from START Center, University of Maryland. GitHub: github.com/PiyushLadukar
-          </div>
+          
           <div style={{ marginTop: 16, display: "flex", justifyContent: "center", gap: 12, flexWrap: "wrap" }}>
             <a href="https://www.start.umd.edu/gtd/" target="_blank" rel="noreferrer" style={{ fontSize: 12, color: "#64748b", textDecoration: "none", fontFamily: F, display: "flex", alignItems: "center", gap: 5 }}><ExternalLink size={11} />GTD Official Site</a>
             <a href="https://www.kaggle.com/datasets/START-UMD/gtd" target="_blank" rel="noreferrer" style={{ fontSize: 12, color: "#64748b", textDecoration: "none", fontFamily: F, display: "flex", alignItems: "center", gap: 5 }}><Link size={11} />Dataset Kaggle</a>
-            <a href="https://github.com/PiyushLadukar" target="_blank" rel="noreferrer" style={{ fontSize: 12, color: "#64748b", textDecoration: "none", fontFamily: F, display: "flex", alignItems: "center", gap: 5 }}><Github size={11} />GitHub Repo</a>
+            <a href="https://github.com/PiyushLadukar/AatankDrishti" target="_blank" rel="noreferrer" style={{ fontSize: 12, color: "#64748b", textDecoration: "none", fontFamily: F, display: "flex", alignItems: "center", gap: 5 }}><Github size={11} />GitHub Repo</a>
           </div>
         </div>
       </div>

@@ -8,7 +8,7 @@ export default defineConfig({
     proxy: {
       // Proxy /api requests to Flask backend during development
       '/api': {
-        target: 'https://aatankdrishti.onrender.com',
+        target: 'https://aatankdrishti-production.up.railway.app',
         changeOrigin: true,
       }
     }
